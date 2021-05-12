@@ -13,7 +13,7 @@ layersControl: any;
 streetMap : any;
 worldtopo: any;
 worldimagery : any;
-coordinatemarker:any;
+overlaytoput:any;
   constructor() { }
 
   ngOnInit(): void {
@@ -33,6 +33,11 @@ coordinatemarker:any;
       detectRetina:true
     });
 
+    this.overlaytoput = tileLayer('http://localhost:8080/geoserver/topp/wms?service=WMS&version=1.1.0&request=GetMap&layers=topp%3Astates&bbox=-124.73142200000001%2C24.955967%2C-66.969849%2C49.371735&width=768&height=330&srs=EPSG%3A4326&styles=&format=image%2Fpng',{
+      detectRetina:true
+    });
+
+
     this.layersControl = {
       baseLayers: {
         'Street Map': this.streetMap,
@@ -40,12 +45,11 @@ coordinatemarker:any;
         'Worl-Imagery Map' : this.worldimagery,
       },
       overlays: {
-        'Co-ordiantes' : this.coordinatemarker
+        'Overlaystoadd' : this.overlaytoput
       }
     };
     this.options = {
-      layers: [ this.streetMap,this.coordinatemarker
-      ],
+      layers: [ this.streetMap],
       zoom: 12,
       center: latLng([ 20.27, 85.84 ])
     };
@@ -54,15 +58,15 @@ coordinatemarker:any;
   onMapClick(e :any)
   {
     console.log(e);
-    this.coordinatemarker = marker([ e.latlng.lat,e.latlng.lng ], {
-      icon: icon({
-        iconSize: [ 25, 41 ],
-        iconAnchor: [ 13, 41 ],
-        iconUrl: 'leaflet/marker-icon.png',
-        iconRetinaUrl: 'leaflet/marker-icon-2x.png',
-        shadowUrl: 'leaflet/marker-shadow.png'
-      }).addTo(this.options).bindPopup("The Coordinate of clicked point: "+e.latlng.lat +" and " +e.latlng.lng).openPopup()
-    });
+    // this.coordinatemarker = marker([ e.latlng.lat,e.latlng.lng ], {
+    //   icon: icon({
+    //     iconSize: [ 25, 41 ],
+    //     iconAnchor: [ 13, 41 ],
+    //     iconUrl: 'leaflet/marker-icon.png',
+    //     iconRetinaUrl: 'leaflet/marker-icon-2x.png',
+    //     shadowUrl: 'leaflet/marker-shadow.png'
+    //   }).addTo(this.options).bindPopup("The Coordinate of clicked point: "+e.latlng.lat +" and " +e.latlng.lng).openPopup()
+    // });
     alert("The Coordinate of clicked point: "+e.latlng.lat +" and " +e.latlng.lng);
   }
 }
